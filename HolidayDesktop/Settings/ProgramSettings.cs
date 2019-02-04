@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Prism.Mvvm;
 using HolidayDesktop.Common;
 
@@ -41,7 +42,7 @@ namespace HolidayDesktop.Settings
         private List<string> _imageFileExtensions = new List<string> { "*.bmp", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.tiff" };
         public List<string> ImageFileExtensions
         {
-            get { return _imageFileExtensions; }
+            get { return _imageFileExtensions.Distinct().ToList(); }
             set { SetProperty(ref _imageFileExtensions, value); }
         }
 
