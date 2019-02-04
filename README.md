@@ -1,0 +1,1 @@
+HolidayDesktop decorates your Windows desktop with the help of animation and holiday pictures e.g. Christmas, Birthday and others. A user can easily work in the system, watching the animation at the same time.
