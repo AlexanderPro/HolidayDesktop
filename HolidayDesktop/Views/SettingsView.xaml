@@ -129,7 +129,7 @@
                                 </DataGrid.Resources>
                             </DataGrid>
                             <DockPanel Grid.Row="2">
-                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding ChangeThemeWhenDayIsChanged, Mode=TwoWay}" IsEnabled="{Binding ThemeChecked}" Content="Change a theme when a day is changed" />
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding ChangeThemeWhenDayIsChanged, Mode=TwoWay}" IsEnabled="{Binding ThemeChecked}" Content="Change the theme when the day is changed" />
                                 <Button Width="20" Height="20" HorizontalAlignment="Right" Content="+" IsEnabled="{Binding ThemeChecked}" Click="AddTheme_Click">
                                     <Button.ToolTip>
                                         <ToolTip>
