@@ -7,12 +7,16 @@ namespace HolidayDesktop.Common
 {
     static class WindowUtils
     {
-        public static void ShowAlwaysOnDesktop(IntPtr hwnd)
+        /*public static void ShowAlwaysOnDesktop(IntPtr hwnd)
         {
             var progmanHandle = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null);
             var shellHandle = FindWindowEx(progmanHandle, IntPtr.Zero, "SHELLDLL_DefView", null);
             if (shellHandle == IntPtr.Zero)
             {
+                // Send 0x052C to Progman. This message directs Progman to spawn a 
+                // WorkerW behind the desktop icons. If it is already there, nothing 
+                // happens.
+                SendMessageTimeout(progmanHandle, 0x052C, new IntPtr(0), IntPtr.Zero, SendMessageTimeoutFlags.SMTO_NORMAL, 1000, out var result);
                 var desktopHandle = GetDesktopWindow();
                 var workerWHandle = IntPtr.Zero;
                 do
@@ -22,6 +26,31 @@ namespace HolidayDesktop.Common
                 } while (shellHandle == IntPtr.Zero && workerWHandle != IntPtr.Zero);
             }
             SetParent(hwnd, shellHandle);
+        }*/
+
+        public static void ShowAlwaysBehindDesktop(IntPtr hwnd)
+        {
+            var progmanHandle = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null);
+            // Send 0x052C to Progman. This message directs Progman to spawn a 
+            // WorkerW behind the desktop icons. If it is already there, nothing 
+            // happens.
+            SendMessageTimeout(progmanHandle, 0x052C, new IntPtr(0), IntPtr.Zero, SendMessageTimeoutFlags.SMTO_NORMAL, 1000, out var result);
+            var workerWHandle = IntPtr.Zero;
+            // We enumerate all Windows, until we find one, that has the SHELLDLL_DefView 
+            // as a child. 
+            // If we found that window, we take its next sibling and assign it to workerw.
+            EnumWindows(new EnumWindowsProc((topHandle, topParamHandle) =>
+            {
+                IntPtr shellHandle = FindWindowEx(topHandle, IntPtr.Zero, "SHELLDLL_DefView", null);
+                if (shellHandle != IntPtr.Zero)
+                {
+                    // Gets the WorkerW Window after the current one.
+                    workerWHandle = FindWindowEx(IntPtr.Zero, topHandle, "WorkerW", null);
+                }
+
+                return true;
+            }), IntPtr.Zero);
+            SetParent(hwnd, workerWHandle);
         }
 
         public static void SetStyles(IntPtr hwnd)

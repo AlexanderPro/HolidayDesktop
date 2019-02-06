@@ -80,7 +80,7 @@ namespace HolidayDesktop.Views
             var hwndSource = HwndSource.FromHwnd(handle);
             hwndSource.AddHook(WindowProc);
             WindowUtils.SetStyles(handle);
-            WindowUtils.ShowAlwaysOnDesktop(handle);
+            WindowUtils.ShowAlwaysBehindDesktop(handle);
             WindowUtils.EnableNoActive(handle, true);
         }
 

@@ -8,6 +8,8 @@ namespace HolidayDesktop.Common
     [SuppressUnmanagedCodeSecurity]
     static class NativeMethods
     {
+        public delegate bool EnumWindowsProc(IntPtr hwnd, IntPtr lParam);
+
         public delegate bool EnumMonitorProc(IntPtr hMonitor, IntPtr hdcMonitor, ref Rect rcMonitor, IntPtr data);
 
         public delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
@@ -50,5 +52,12 @@ namespace HolidayDesktop.Common
 
         [DllImport("user32")]
         public static extern int GetClassName(IntPtr hwnd, StringBuilder name, int count);
+
+        [DllImport("user32")]
+        public static extern IntPtr SendMessageTimeout(IntPtr windowHandle, uint Msg, IntPtr wParam, IntPtr lParam, SendMessageTimeoutFlags flags, uint timeout, out IntPtr result);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
     }
 }
