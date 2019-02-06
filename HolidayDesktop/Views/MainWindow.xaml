@@ -8,6 +8,7 @@
         AllowsTransparency="True" 
         WindowStyle="None" 
         Background="{x:Null}" 
+        ResizeMode="NoResize"
         IsHitTestVisible="False" 
         Loaded="Window_Loaded" 
         Closing="Window_Closing" 
