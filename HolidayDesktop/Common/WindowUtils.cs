@@ -7,7 +7,7 @@ namespace HolidayDesktop.Common
 {
     static class WindowUtils
     {
-        /*public static void ShowAlwaysOnDesktop(IntPtr hwnd)
+        public static void ShowAlwaysBehindDesktopBeforeWindows8(IntPtr hwnd)
         {
             var progmanHandle = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null);
             var shellHandle = FindWindowEx(progmanHandle, IntPtr.Zero, "SHELLDLL_DefView", null);
@@ -16,7 +16,6 @@ namespace HolidayDesktop.Common
                 // Send 0x052C to Progman. This message directs Progman to spawn a 
                 // WorkerW behind the desktop icons. If it is already there, nothing 
                 // happens.
-                SendMessageTimeout(progmanHandle, 0x052C, new IntPtr(0), IntPtr.Zero, SendMessageTimeoutFlags.SMTO_NORMAL, 1000, out var result);
                 var desktopHandle = GetDesktopWindow();
                 var workerWHandle = IntPtr.Zero;
                 do
@@ -25,8 +24,16 @@ namespace HolidayDesktop.Common
                     shellHandle = FindWindowEx(workerWHandle, IntPtr.Zero, "SHELLDLL_DefView", null);
                 } while (shellHandle == IntPtr.Zero && workerWHandle != IntPtr.Zero);
             }
+            if (shellHandle != IntPtr.Zero)
+            {
+                var sysListHandle = FindWindowEx(shellHandle, IntPtr.Zero, "SysListView32", null);
+                if (sysListHandle != IntPtr.Zero)
+                {
+                    shellHandle = sysListHandle;
+                }
+            }
             SetParent(hwnd, shellHandle);
-        }*/
+        }
 
         public static void ShowAlwaysBehindDesktop(IntPtr hwnd)
         {
@@ -34,7 +41,9 @@ namespace HolidayDesktop.Common
             // Send 0x052C to Progman. This message directs Progman to spawn a 
             // WorkerW behind the desktop icons. If it is already there, nothing 
             // happens.
-            SendMessageTimeout(progmanHandle, 0x052C, new IntPtr(0), IntPtr.Zero, SendMessageTimeoutFlags.SMTO_NORMAL, 1000, out var result);
+            //SendMessageTimeout(progmanHandle, 0x052C, new IntPtr(0), IntPtr.Zero, SendMessageTimeoutFlags.SMTO_NORMAL, 1000, out var result);
+            SendMessage(progmanHandle, 0x052C, (IntPtr)0x0000000D, (IntPtr)0);
+            SendMessage(progmanHandle, 0x052C, (IntPtr)0x0000000D, (IntPtr)1);
             var workerWHandle = IntPtr.Zero;
             // We enumerate all Windows, until we find one, that has the SHELLDLL_DefView 
             // as a child. 
@@ -50,6 +59,7 @@ namespace HolidayDesktop.Common
 
                 return true;
             }), IntPtr.Zero);
+            workerWHandle = workerWHandle == IntPtr.Zero ? progmanHandle : workerWHandle;
             SetParent(hwnd, workerWHandle);
         }
 

@@ -80,8 +80,15 @@ namespace HolidayDesktop.Views
             var hwndSource = HwndSource.FromHwnd(handle);
             hwndSource.AddHook(WindowProc);
             WindowUtils.SetStyles(handle);
-            WindowUtils.ShowAlwaysBehindDesktop(handle);
             WindowUtils.EnableNoActive(handle, true);
+            if (Environment.OSVersion.Version.Major < 6 || (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor < 2))
+            {
+                WindowUtils.ShowAlwaysBehindDesktopBeforeWindows8(handle);
+            }
+            else
+            {
+                WindowUtils.ShowAlwaysBehindDesktop(handle);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
