@@ -1,5 +1,11 @@
 HolidayDesktop decorates your Windows desktop with the help of animation and holiday pictures e.g. Christmas, Birthday and others. A user can easily work in the system, watching the animation at the same time.
 
+Requirements
+--------------------
+
+* OS Windows 8 and later
+* .NET Framework 4.5
+
 Happy New Year
 ------------------
 ![alt tag](https://user-images.githubusercontent.com/8102586/52282779-3a249f80-2972-11e9-826a-fd3590d310dc.jpg)
